@@ -35,17 +35,21 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
 # templates stay simple and you don't have to touch HTML to update copy.
 
 PROFILE = {
-    "name": "Your Name",
-    "tagline": "Software developer building useful things.",
+    "name": "Praise Tony-Shokare",
+    "tagline": "Software developer building web apps and games.",
     "bio": (
-        "I build web apps and games. I like clean interfaces, "
+        "I build web apps and games — from an AI-assisted help desk system "
+        "to a turn-based roguelike card battler. I like clean interfaces, "
         "practical AI features, and shipping things that work."
     ),
-    "email": "you@example.com",
+    "email": "opshokare@gmail.com",
     "location": "Remote",
     "socials": [
-        {"label": "GitHub", "url": "https://github.com/"},
-        {"label": "LinkedIn", "url": "https://www.linkedin.com/"},
+        {"label": "GitHub", "url": "https://github.com/ot-404"},
+        {
+            "label": "LinkedIn",
+            "url": "https://www.linkedin.com/in/oruaroghene-tony-shokare-0069aa391",
+        },
     ],
 }
 
