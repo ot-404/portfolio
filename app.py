@@ -75,7 +75,7 @@ PROJECTS = [
             "built in Godot 4."
         ),
         "tags": ["Godot 4", "Game dev", "Mobile"],
-        "url": "",
+        "url": "https://github.com/ot-404/my-game",
     },
 ]
 
