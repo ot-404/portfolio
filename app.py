@@ -66,7 +66,7 @@ PROJECTS = [
             "AI/RAG-assisted ticket handling."
         ),
         "tags": ["Flask", "React", "AI / RAG", "JWT"],
-        "url": "",
+        "url": "https://github.com/ot-404/ai-help-desk-system",
     },
     {
         "title": "MY_Game",
