@@ -163,11 +163,14 @@ def _send_contact_email(name: str, email: str, message: str) -> bool:
     user = os.environ.get("SMTP_USER")
     password = os.environ.get("SMTP_PASSWORD")
     recipient = os.environ.get("CONTACT_TO", PROFILE["email"])
+    # From address: with a relay (e.g. Brevo) the login often differs from the
+    # verified sender, so allow setting it explicitly. Falls back to the login.
+    sender = os.environ.get("SMTP_FROM") or user or recipient
     use_tls = os.environ.get("SMTP_USE_TLS", "true").lower() not in ("0", "false", "no")
 
     msg = EmailMessage()
     msg["Subject"] = f"Portfolio contact from {name}"
-    msg["From"] = f"Portfolio Contact <{user or recipient}>"
+    msg["From"] = f"Portfolio Contact <{sender}>"
     msg["To"] = recipient
     msg["Reply-To"] = email  # so replying goes straight to the sender
     msg.set_content(

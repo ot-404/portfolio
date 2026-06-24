@@ -62,21 +62,27 @@ when SMTP is configured. If SMTP isn't set, the form still works and just logs
 to the file. Configuration is via environment variables — see
 [`.env.example`](.env.example).
 
-### Get a Gmail App Password (one-time)
-A normal Gmail password won't work for SMTP; you need a 16-character App Password:
-1. Enable **2-Step Verification**: https://myaccount.google.com/security
-2. Create an App Password: https://myaccount.google.com/apppasswords
-   (name it e.g. "Portfolio") and copy the 16-character code.
+It works with any SMTP provider. The default config uses **Brevo** (free tier,
+300 emails/day, no Gmail 2FA needed). Mail still lands in your normal inbox.
+
+### Get Brevo SMTP credentials (one-time)
+1. Sign up at https://www.brevo.com (free, no card).
+2. Verify a sender: **Senders, Domains & Dedicated IPs → Senders → Add a sender**,
+   using the address you want mail to come *from* (e.g. opshokare@gmail.com), and
+   click the confirmation link Brevo emails you.
+3. Get SMTP creds: account menu → **SMTP & API → SMTP** tab. Note the **Login**
+   and click **Generate a new SMTP key**; copy the key.
 
 ### Local
-Copy `.env.example` to `.env`, set `SMTP_USER` to your Gmail address and
-`SMTP_PASSWORD` to the App Password, then run `python app.py`. Submitting the
-contact form will email `CONTACT_TO`.
+Copy `.env.example` to `.env` and set `SMTP_USER` (Brevo login),
+`SMTP_PASSWORD` (SMTP key), `SMTP_FROM` (verified sender), and `CONTACT_TO`.
+Run `python app.py` and submit the form — it emails `CONTACT_TO`.
 
 ### Render
-On first Blueprint deploy, Render prompts for `SMTP_USER`, `SMTP_PASSWORD`, and
-`CONTACT_TO` (declared `sync: false` in `render.yaml`). Enter your Gmail address
-and the App Password. `SMTP_HOST`/`SMTP_PORT` are preset for Gmail.
+On first Blueprint deploy, Render prompts for `SMTP_USER`, `SMTP_PASSWORD`,
+`SMTP_FROM`, and `CONTACT_TO` (declared `sync: false`). `SMTP_HOST`/`SMTP_PORT`
+are preset for Brevo. (To use Gmail instead, set `SMTP_HOST=smtp.gmail.com` and
+use a Gmail App Password — requires 2-Step Verification enabled.)
 
 ## Notes
 - Set a real `SECRET_KEY` env var in production (used to sign the session cookie
@@ -84,5 +90,3 @@ and the App Password. `SMTP_HOST`/`SMTP_PORT` are preset for Gmail.
 - Contact-form submissions are also written to `data/messages.jsonl` on local
   disk. On Render's free tier the filesystem is ephemeral, so that file is lost
   on redeploy/restart — which is why email delivery is the durable path.
-- The contact form stores messages locally. To email them instead, wire up SMTP
-  in the `_save_message` / `contact` handler.

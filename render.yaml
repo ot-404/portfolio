@@ -13,16 +13,18 @@ services:
         generateValue: true
       - key: PYTHON_VERSION
         value: "3.12.7"
-      # --- Contact-form email (SMTP) ---
+      # --- Contact-form email (SMTP via Brevo) ---
       - key: SMTP_HOST
-        value: "smtp.gmail.com"
+        value: "smtp-relay.brevo.com"
       - key: SMTP_PORT
         value: "587"
-      # Secrets / addresses: Render will prompt you to enter these on first
-      # deploy (sync: false keeps them out of this committed file).
-      - key: SMTP_USER
+      # Secrets / addresses: Render prompts you to enter these on first deploy
+      # (sync: false keeps them out of this committed file).
+      - key: SMTP_USER       # Brevo login
         sync: false
-      - key: SMTP_PASSWORD
+      - key: SMTP_PASSWORD   # Brevo SMTP key
         sync: false
-      - key: CONTACT_TO
+      - key: SMTP_FROM       # verified sender address (e.g. opshokare@gmail.com)
+        sync: false
+      - key: CONTACT_TO      # inbox to deliver to
         sync: false
