@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile.name }} — {{ profile.tagline }}{% endblock %}
+
+{% block content %}
+<section class="hero container">
+  <div class="hero-text">
+    <p class="eyebrow">Hi, I'm {{ profile.name }}</p>
+    <h1>{{ profile.tagline }}</h1>
+    <p class="lead">{{ profile.bio }}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('projects') }}">View my work</a>
+      <a class="btn btn-ghost" href="{{ url_for('contact') }}">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-card" aria-hidden="true">
+    <div class="hero-glow"></div>
+    <pre class="code-snippet"><span class="c-key">def</span> <span class="c-fn">hello</span>():
+    <span class="c-key">return</span> <span class="c-str">"Let's build something."</span></pre>
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">What I work with</h2>
+  <ul class="skill-grid">
+    {% for skill in skills %}
+      <li class="skill-chip">{{ skill }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <h2 class="section-title">Featured projects</h2>
+    <a class="link-arrow" href="{{ url_for('projects') }}">All projects &rarr;</a>
+  </div>
+  <div class="project-grid">
+    {% for p in featured %}
+      <article class="project-card">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.blurb }}</p>
+        <ul class="tag-row">
+          {% for t in p.tags %}<li>{{ t }}</li>{% endfor %}
+        </ul>
+        {% if p.url %}<a class="link-arrow" href="{{ p.url }}" target="_blank" rel="noopener">Visit &rarr;</a>{% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

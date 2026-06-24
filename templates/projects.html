@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Projects — {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="section container">
+  <p class="eyebrow">Portfolio</p>
+  <h1 class="page-title">Projects</h1>
+  <p class="lead">A selection of things I've built.</p>
+
+  <div class="project-grid project-grid--full">
+    {% for p in projects %}
+      <article class="project-card">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.blurb }}</p>
+        <ul class="tag-row">
+          {% for t in p.tags %}<li>{{ t }}</li>{% endfor %}
+        </ul>
+        {% if p.url %}<a class="link-arrow" href="{{ p.url }}" target="_blank" rel="noopener">Visit &rarr;</a>{% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
