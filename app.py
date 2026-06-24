@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import json
 import os
+import smtplib
 from datetime import datetime, timezone
+from email.message import EmailMessage
 from pathlib import Path
 
 from flask import (
@@ -20,6 +22,15 @@ from flask import (
     request,
     url_for,
 )
+
+# Load a local .env file if present (dev convenience). On a host like Render,
+# set these variables in the dashboard instead of committing a .env file.
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
 
 BASE_DIR = Path(__file__).resolve().parent
 MESSAGES_FILE = BASE_DIR / "data" / "messages.jsonl"
@@ -109,7 +120,13 @@ def contact():
             flash("Please fill in every field.", "error")
             return redirect(url_for("contact"))
 
+        # Always keep a local copy, then try to email it.
         _save_message(name, email, message)
+        try:
+            _send_contact_email(name, email, message)
+        except Exception as exc:  # noqa: BLE001 - never 500 on a mail hiccup
+            app.logger.warning("Contact email failed: %s", exc)
+
         flash("Thanks — your message was received!", "success")
         return redirect(url_for("contact"))
 
@@ -127,6 +144,53 @@ def _save_message(name: str, email: str, message: str) -> None:
     }
     with MESSAGES_FILE.open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(record) + "\n")
+
+
+def _send_contact_email(name: str, email: str, message: str) -> bool:
+    """Email a contact submission via SMTP.
+
+    Configured entirely through environment variables (see .env.example):
+      SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, CONTACT_TO, SMTP_USE_TLS
+
+    Returns False (without raising) when SMTP isn't configured, so the form
+    still works locally — the submission is already saved to disk either way.
+    """
+    host = os.environ.get("SMTP_HOST")
+    if not host:
+        return False
+
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    user = os.environ.get("SMTP_USER")
+    password = os.environ.get("SMTP_PASSWORD")
+    recipient = os.environ.get("CONTACT_TO", PROFILE["email"])
+    use_tls = os.environ.get("SMTP_USE_TLS", "true").lower() not in ("0", "false", "no")
+
+    msg = EmailMessage()
+    msg["Subject"] = f"Portfolio contact from {name}"
+    msg["From"] = f"Portfolio Contact <{user or recipient}>"
+    msg["To"] = recipient
+    msg["Reply-To"] = email  # so replying goes straight to the sender
+    msg.set_content(
+        "New message from your portfolio contact form:\n\n"
+        f"Name:  {name}\n"
+        f"Email: {email}\n\n"
+        f"{message}\n"
+    )
+
+    server = (
+        smtplib.SMTP_SSL(host, port, timeout=15)
+        if port == 465
+        else smtplib.SMTP(host, port, timeout=15)
+    )
+    try:
+        if port != 465 and use_tls:
+            server.starttls()
+        if user and password:
+            server.login(user, password)
+        server.send_message(msg)
+    finally:
+        server.quit()
+    return True
 
 
 @app.context_processor

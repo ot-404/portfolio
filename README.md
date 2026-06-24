@@ -56,11 +56,33 @@ as the production server.
 Render auto-redeploys on every push to `main`. Note: free instances sleep after
 ~15 min idle, so the first request after a nap takes ~30-50s to wake.
 
+## Contact form → email (SMTP)
+Each submission is saved to `data/messages.jsonl` **and** emailed to your inbox
+when SMTP is configured. If SMTP isn't set, the form still works and just logs
+to the file. Configuration is via environment variables — see
+[`.env.example`](.env.example).
+
+### Get a Gmail App Password (one-time)
+A normal Gmail password won't work for SMTP; you need a 16-character App Password:
+1. Enable **2-Step Verification**: https://myaccount.google.com/security
+2. Create an App Password: https://myaccount.google.com/apppasswords
+   (name it e.g. "Portfolio") and copy the 16-character code.
+
+### Local
+Copy `.env.example` to `.env`, set `SMTP_USER` to your Gmail address and
+`SMTP_PASSWORD` to the App Password, then run `python app.py`. Submitting the
+contact form will email `CONTACT_TO`.
+
+### Render
+On first Blueprint deploy, Render prompts for `SMTP_USER`, `SMTP_PASSWORD`, and
+`CONTACT_TO` (declared `sync: false` in `render.yaml`). Enter your Gmail address
+and the App Password. `SMTP_HOST`/`SMTP_PORT` are preset for Gmail.
+
 ## Notes
 - Set a real `SECRET_KEY` env var in production (used to sign the session cookie
   for flash messages). On Render this is generated for you by `render.yaml`.
-- Contact-form submissions are written to `data/messages.jsonl` on local disk.
-  On Render's free tier the filesystem is ephemeral, so messages are lost on
-  redeploy/restart — wire up email (SMTP) or a database for durable storage.
+- Contact-form submissions are also written to `data/messages.jsonl` on local
+  disk. On Render's free tier the filesystem is ephemeral, so that file is lost
+  on redeploy/restart — which is why email delivery is the durable path.
 - The contact form stores messages locally. To email them instead, wire up SMTP
   in the `_save_message` / `contact` handler.
