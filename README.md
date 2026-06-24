@@ -42,8 +42,25 @@ portfolio/
 └── data/               # Contact submissions (git-ignored, created at runtime)
 ```
 
+## Deploy (Render)
+This repo includes a [`render.yaml`](render.yaml) blueprint and uses `gunicorn`
+as the production server.
+
+1. Push this repo to GitHub (already done: https://github.com/ot-404/portfolio).
+2. In the [Render dashboard](https://dashboard.render.com/): **New → Blueprint**.
+3. Connect this GitHub repo. Render reads `render.yaml`, creates a free web
+   service, and generates a `SECRET_KEY` automatically.
+4. Click **Apply**. First build takes a couple of minutes; you'll get a public
+   `https://portfolio-xxxx.onrender.com` URL.
+
+Render auto-redeploys on every push to `main`. Note: free instances sleep after
+~15 min idle, so the first request after a nap takes ~30-50s to wake.
+
 ## Notes
 - Set a real `SECRET_KEY` env var in production (used to sign the session cookie
-  for flash messages).
+  for flash messages). On Render this is generated for you by `render.yaml`.
+- Contact-form submissions are written to `data/messages.jsonl` on local disk.
+  On Render's free tier the filesystem is ephemeral, so messages are lost on
+  redeploy/restart — wire up email (SMTP) or a database for durable storage.
 - The contact form stores messages locally. To email them instead, wire up SMTP
   in the `_save_message` / `contact` handler.
