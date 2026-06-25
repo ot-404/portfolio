@@ -10,20 +10,27 @@ templates and a static CSS/JS frontend. Independent of any other project.
 
 ## Run locally
 
+**Easiest (Windows):** double-click **`run.bat`** — it creates the virtual
+environment if needed, installs dependencies, and starts the site.
+
+**Manual:**
 ```bash
-# 1. Create and activate a virtual environment
+# 1. Create the virtual environment
 python -m venv .venv
-.venv\Scripts\activate        # Windows (PowerShell: .venv\Scripts\Activate.ps1)
-# source .venv/bin/activate   # macOS / Linux
 
-# 2. Install dependencies
-pip install -r requirements.txt
+# 2. Install dependencies (use the venv's pip)
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
-# 3. Run
-python app.py
+# 3. Run with the venv's Python (avoids "No module named 'flask'")
+.venv\Scripts\python.exe app.py
+# macOS / Linux: .venv/bin/python app.py
 ```
 
 Then open http://127.0.0.1:5000
+
+> Tip: a plain `python app.py` uses your *system* Python, which doesn't have
+> Flask installed — that's the usual "can't run" error. Use `run.bat` or the
+> `.venv\Scripts\python.exe` path above.
 
 ## Make it yours
 All site content lives in the `PROFILE`, `SKILLS`, and `PROJECTS` variables near
