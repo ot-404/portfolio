@@ -40,6 +40,11 @@ app = Flask(__name__)
 # Override in production with a real secret via the SECRET_KEY env var.
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
 
+# Google Search Console "HTML tag" verification code (the value from the
+# <meta name="google-site-verification" content="..."> snippet). Leave blank
+# until you start verification; setting it renders the tag site-wide.
+GOOGLE_SITE_VERIFICATION = os.environ.get("GOOGLE_SITE_VERIFICATION", "")
+
 
 # --- Site content -----------------------------------------------------------
 # Edit these to make the site yours. Keeping content in one place means the
@@ -204,6 +209,7 @@ def inject_globals():
         "profile": PROFILE,
         # Absolute base URL, used for canonical/OG tags. Override via env.
         "site_url": os.environ.get("SITE_URL", "https://ot-404.github.io"),
+        "google_verification": GOOGLE_SITE_VERIFICATION,
     }
 
 

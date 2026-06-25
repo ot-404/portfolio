@@ -8,6 +8,7 @@
   <meta name="author" content="{{ profile.name }}" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0b0e14" />
+  {% if google_verification %}<meta name="google-site-verification" content="{{ google_verification }}" />{% endif %}
   <link rel="canonical" href="{{ site_url }}{{ request.path }}" />
 
   <!-- Open Graph (Facebook, LinkedIn, etc.) -->

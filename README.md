@@ -49,9 +49,19 @@ portfolio/
 └── data/               # Contact submissions (git-ignored, created at runtime)
 ```
 
-## Deploy (Render)
-This repo includes a [`render.yaml`](render.yaml) blueprint and uses `gunicorn`
-as the production server.
+## Deploy (GitHub Pages) — current live site
+The site is live at **https://ot-404.github.io** as a static build.
+
+- **Publish updates:** double-click **`deploy.bat`** (or run it). It runs
+  `build_static.py` to render `./build/`, then pushes that to the
+  `ot-404.github.io` repo. Live in ~1 minute.
+- The static build rewrites the contact form to FormSubmit.co and generates
+  `sitemap.xml` + `robots.txt`. SEO meta lives in `templates/base.html`.
+
+## Deploy (Render) — optional dynamic alternative
+If you'd rather run the full Flask app (server-side contact form via SMTP),
+this repo also includes a [`render.yaml`](render.yaml) blueprint and uses
+`gunicorn` as the production server.
 
 1. Push this repo to GitHub (already done: https://github.com/ot-404/portfolio).
 2. In the [Render dashboard](https://dashboard.render.com/): **New → Blueprint**.
