@@ -70,8 +70,10 @@ def main() -> None:
         dest.write_text(html, encoding="utf-8")
         print(f"  wrote {out}")
 
-    # Static assets (css/js) — overwrite in place, no deletion needed.
+    # Static assets (css/js/icons) — overwrite in place, no deletion needed.
     shutil.copytree("static", BUILD / "static", dirs_exist_ok=True)
+    # Also expose favicon.ico at the site root for the implicit browser request.
+    shutil.copy("static/favicon.ico", BUILD / "favicon.ico")
     print("  copied static/")
 
     # Skip Jekyll processing on GitHub Pages.
