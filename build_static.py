@@ -53,9 +53,10 @@ def rewrite_contact_form(html: str) -> str:
 
 
 def main() -> None:
-    if BUILD.exists():
-        shutil.rmtree(BUILD)
-    BUILD.mkdir()
+    # Overwrite output in place rather than deleting the tree first. This keeps
+    # the deploy repo's .git intact across rebuilds and avoids Windows/OneDrive
+    # "access denied" errors from removing locked directories.
+    BUILD.mkdir(exist_ok=True)
 
     client = site.app.test_client()
     for route, out in PAGES.items():
@@ -69,8 +70,8 @@ def main() -> None:
         dest.write_text(html, encoding="utf-8")
         print(f"  wrote {out}")
 
-    # Static assets (css/js).
-    shutil.copytree("static", BUILD / "static")
+    # Static assets (css/js) — overwrite in place, no deletion needed.
+    shutil.copytree("static", BUILD / "static", dirs_exist_ok=True)
     print("  copied static/")
 
     # Skip Jekyll processing on GitHub Pages.
