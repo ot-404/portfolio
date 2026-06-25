@@ -199,7 +199,12 @@ def _send_contact_email(name: str, email: str, message: str) -> bool:
 @app.context_processor
 def inject_globals():
     """Make these available to every template without passing them in."""
-    return {"now": datetime.now(timezone.utc), "profile": PROFILE}
+    return {
+        "now": datetime.now(timezone.utc),
+        "profile": PROFILE,
+        # Absolute base URL, used for canonical/OG tags. Override via env.
+        "site_url": os.environ.get("SITE_URL", "https://ot-404.github.io"),
+    }
 
 
 if __name__ == "__main__":

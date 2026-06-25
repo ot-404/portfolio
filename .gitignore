@@ -8,6 +8,9 @@ env/
 # Local data (contact form submissions)
 data/
 
+# Generated static site (deployed to the ot-404.github.io repo)
+build/
+
 # Env / secrets
 .env
 
