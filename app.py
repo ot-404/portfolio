@@ -20,6 +20,7 @@ from flask import (
     redirect,
     render_template,
     request,
+    send_from_directory,
     url_for,
 )
 
@@ -78,6 +79,17 @@ SKILLS = [
 
 PROJECTS = [
     {
+        "title": "BeatLab Pro",
+        "blurb": (
+            "A browser-based DAW and beat sequencer — 16-step drum grid, "
+            "polyphonic piano roll, per-track mixer, synth editor with ADSR "
+            "and filter, reverb and delay, and live keyboard input. "
+            "Entirely synthesised in-browser via the Web Audio API."
+        ),
+        "tags": ["JavaScript", "Web Audio API", "HTML5", "CSS3"],
+        "url": "/beatlab/",
+    },
+    {
         "title": "AI Help Desk System",
         "blurb": (
             "A help desk web app with JWT auth, role-based dashboards, and "
@@ -114,6 +126,11 @@ def index():
 @app.route("/projects")
 def projects():
     return render_template("projects.html", profile=PROFILE, projects=PROJECTS)
+
+
+@app.route("/beatlab/")
+def beatlab():
+    return send_from_directory("static/beatlab", "index.html")
 
 
 @app.route("/contact", methods=["GET", "POST"])
