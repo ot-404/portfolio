@@ -27,6 +27,7 @@ PAGES = {
     "/": "index.html",
     "/projects": "projects/index.html",
     "/contact": "contact/index.html",
+    "/beatlab/": "beatlab/index.html",
 }
 
 
@@ -70,6 +71,16 @@ def main() -> None:
         dest.write_text(html, encoding="utf-8")
         print(f"  wrote {out}")
 
+    # One page per skill: /skills/<slug>/index.html
+    for s in site.SKILLS:
+        resp = client.get(f"/skills/{s['slug']}/")
+        assert resp.status_code == 200, f"/skills/{s['slug']}/ -> {resp.status_code}"
+        html = rewrite_links(resp.get_data(as_text=True))
+        dest = BUILD / "skills" / s["slug"] / "index.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(html, encoding="utf-8")
+    print(f"  wrote {len(site.SKILLS)} skill pages -> skills/")
+
     # Static assets (css/js/icons) — overwrite in place, no deletion needed.
     shutil.copytree("static", BUILD / "static", dirs_exist_ok=True)
     # Also expose favicon.ico at the site root for the implicit browser request.
@@ -89,6 +100,7 @@ def main() -> None:
     # sitemap.xml
     today = date.today().isoformat()
     locs = [f"{SITE_URL}/", f"{SITE_URL}/projects/", f"{SITE_URL}/contact/"]
+    locs += [f"{SITE_URL}/skills/{s['slug']}/" for s in site.SKILLS]
     urls = "\n".join(
         f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod></url>" for loc in locs
     )

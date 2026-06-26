@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ skill.name }} — {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="section container narrow">
+  <p class="eyebrow"><a class="back-link" href="/#skills">&larr; What I work with</a></p>
+  <h1 class="page-title">{{ skill.name }}</h1>
+  <p class="lead">{{ skill.summary }}</p>
+
+  <h2 class="section-title">Where I've used it</h2>
+  <div class="usage-list">
+    {% for u in skill.usage %}
+      <article class="usage-item">
+        <h3>
+          {% if u.href %}
+            <a href="{{ u.href }}"{% if u.href.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ u.label }}</a>
+          {% else %}
+            {{ u.label }}
+          {% endif %}
+        </h3>
+        <p>{{ u.detail }}</p>
+      </article>
+    {% endfor %}
+  </div>
+
+  <p class="usage-footer">
+    <a class="link-arrow" href="{{ url_for('projects') }}">See all projects &rarr;</a>
+  </p>
+</section>
+{% endblock %}

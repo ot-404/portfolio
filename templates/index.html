@@ -20,11 +20,12 @@
   </div>
 </section>
 
-<section class="section container">
+<section class="section container" id="skills">
   <h2 class="section-title">What I work with</h2>
+  <p class="muted">Click a skill to see how I've used it in my projects.</p>
   <ul class="skill-grid">
     {% for skill in skills %}
-      <li><a class="skill-chip" href="{{ skill.url }}"{% if skill.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ skill.name }}</a></li>
+      <li><a class="skill-chip" href="{{ url_for('skill', slug=skill.slug) }}">{{ skill.name }}</a></li>
     {% endfor %}
   </ul>
 </section>

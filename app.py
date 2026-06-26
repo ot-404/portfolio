@@ -16,6 +16,7 @@ from pathlib import Path
 
 from flask import (
     Flask,
+    abort,
     flash,
     redirect,
     render_template,
@@ -72,17 +73,149 @@ PROFILE = {
     ],
 }
 
-# Each skill links to a project that shows it in action (Git -> GitHub profile).
+# Each skill has its own page (/skills/<slug>/) explaining how it's used across
+# the projects below. "usage" entries link to the relevant project or repo.
 SKILLS = [
-    {"name": "Python", "url": "/projects/#p-lumo"},
-    {"name": "Flask", "url": "/projects/#p-lumo"},
-    {"name": "JavaScript", "url": "/projects/#p-beatlab"},
-    {"name": "React", "url": "/projects/#p-lumo"},
-    {"name": "HTML & CSS", "url": "/projects/#p-beatlab"},
-    {"name": "SQL", "url": "/projects/#p-lumo"},
-    {"name": "Git", "url": "https://github.com/ot-404"},
-    {"name": "Godot", "url": "/projects/#p-mygame"},
+    {
+        "name": "Python",
+        "slug": "python",
+        "summary": "My main backend language — web APIs, data models, auth, and wiring up AI features.",
+        "usage": [
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "Powers the entire backend: a Flask REST API, SQLAlchemy data "
+                "models, JWT auth, and the server-side logic that calls Claude for "
+                "AI quick-add, task breakdown, and “plan my day”.",
+            },
+            {
+                "label": "This portfolio",
+                "href": "https://github.com/ot-404/portfolio",
+                "detail": "Built as a small Flask app with server-rendered Jinja templates "
+                "and a static-site build step.",
+            },
+        ],
+    },
+    {
+        "name": "Flask",
+        "slug": "flask",
+        "summary": "My go-to Python web framework for building APIs and server-rendered sites.",
+        "usage": [
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "Serves the REST API for tasks, lists, and auth, issues JWTs, and "
+                "serves the compiled React/Vite frontend from a single container.",
+            },
+            {
+                "label": "This portfolio",
+                "href": "https://github.com/ot-404/portfolio",
+                "detail": "Server-renders the pages with Jinja; a build script then freezes "
+                "it to static HTML for GitHub Pages.",
+            },
+        ],
+    },
+    {
+        "name": "JavaScript",
+        "slug": "javascript",
+        "summary": "The language behind my interactive front-ends — from raw browser APIs to React.",
+        "usage": [
+            {
+                "label": "BeatLab Pro",
+                "href": "/projects/#p-beatlab",
+                "detail": "The whole app is vanilla JavaScript: real-time audio synthesis via "
+                "the Web Audio API, a 16-step sequencer, a piano roll, and a synth/mixer "
+                "UI — no framework.",
+            },
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "Drives the React front-end and its AI-powered interactions.",
+            },
+        ],
+    },
+    {
+        "name": "React",
+        "slug": "react",
+        "summary": "My framework of choice for building component-based, stateful UIs.",
+        "usage": [
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "React 19 + Vite power the app shell — task views "
+                "(Today/Upcoming/All), nested subtasks, the AI assistant chat drawer, and "
+                "the marketing landing page — styled with Tailwind CSS.",
+            },
+        ],
+    },
+    {
+        "name": "HTML & CSS",
+        "slug": "html-css",
+        "summary": "The foundation of every interface I build — semantic markup and clean, responsive styling.",
+        "usage": [
+            {
+                "label": "BeatLab Pro",
+                "href": "/projects/#p-beatlab",
+                "detail": "Hand-written HTML5 and CSS3 for the DAW layout, the grid "
+                "sequencer, and all the controls.",
+            },
+            {
+                "label": "This portfolio",
+                "href": "https://github.com/ot-404/portfolio",
+                "detail": "A custom dark theme built with CSS variables and a responsive "
+                "layout — no UI framework.",
+            },
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "Styled with Tailwind CSS on top of semantic markup.",
+            },
+        ],
+    },
+    {
+        "name": "SQL",
+        "slug": "sql",
+        "summary": "Relational data modeling and queries for app persistence.",
+        "usage": [
+            {
+                "label": "Lumo — AI To-Do App",
+                "href": "/projects/#p-lumo",
+                "detail": "Models users, tasks, lists, and nested subtasks via SQLAlchemy "
+                "over a SQL database, with the relationships and queries that power "
+                "every view.",
+            },
+        ],
+    },
+    {
+        "name": "Git",
+        "slug": "git",
+        "summary": "Version control for everything I build, with GitHub for hosting and deploys.",
+        "usage": [
+            {
+                "label": "All my projects",
+                "href": "https://github.com/ot-404",
+                "detail": "Every project lives in a Git repo on GitHub. I branch and commit "
+                "day to day and rely on Git-based deploys — this portfolio auto-publishes "
+                "to GitHub Pages on each push.",
+            },
+        ],
+    },
+    {
+        "name": "Godot",
+        "slug": "godot",
+        "summary": "The engine I use for game development, scripting in GDScript.",
+        "usage": [
+            {
+                "label": "MY_Game",
+                "href": "/projects/#p-mygame",
+                "detail": "A turn-based roguelike card battler built in Godot 4 — scenes, "
+                "GDScript gameplay logic, a save system, and exports for both desktop "
+                "and mobile.",
+            },
+        ],
+    },
 ]
+SKILLS_BY_SLUG = {s["slug"]: s for s in SKILLS}
 
 PROJECTS = [
     {
@@ -138,6 +271,14 @@ def index():
 @app.route("/projects")
 def projects():
     return render_template("projects.html", profile=PROFILE, projects=PROJECTS)
+
+
+@app.route("/skills/<slug>/")
+def skill(slug):
+    s = SKILLS_BY_SLUG.get(slug)
+    if s is None:
+        abort(404)
+    return render_template("skill.html", profile=PROFILE, skill=s)
 
 
 @app.route("/beatlab/")
