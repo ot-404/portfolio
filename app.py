@@ -79,39 +79,54 @@ SKILLS = [
     {
         "name": "Python",
         "slug": "python",
-        "summary": "My main backend language — web APIs, data models, auth, and wiring up AI features.",
+        "summary": "My main backend language — REST APIs, data models, authentication, and the glue around AI features.",
         "usage": [
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "Powers the entire backend: a Flask REST API, SQLAlchemy data "
-                "models, JWT auth, and the server-side logic that calls Claude for "
-                "AI quick-add, task breakdown, and “plan my day”.",
+                "detail": "Python (3.11) powers the whole backend. It's a Flask REST API built "
+                "with an app-factory pattern and blueprinted routes for auth, tasks, lists, "
+                "and AI. Python handles JWT-based auth (identity = user id, no roles), Werkzeug "
+                "password hashing, and all the task logic: view filters "
+                "(today/upcoming/all/inbox/completed), completion toggling that cascades to "
+                "subtasks, and drag-to-reorder persistence. An ai_service module tries Claude "
+                "first, falls back to an OpenAI-compatible endpoint, then to a local heuristic "
+                "parser, so the app works even with no API keys. It runs under gunicorn in a "
+                "single Docker container.",
             },
             {
                 "label": "This portfolio",
                 "href": "https://github.com/ot-404/portfolio",
-                "detail": "Built as a small Flask app with server-rendered Jinja templates "
-                "and a static-site build step.",
+                "detail": "A small Flask app in Python: the routes, the content model behind "
+                "these project and skill pages, an SMTP contact-form mailer, and a build "
+                "script (build_static.py) that renders the whole site to static HTML for "
+                "GitHub Pages.",
             },
         ],
     },
     {
         "name": "Flask",
         "slug": "flask",
-        "summary": "My go-to Python web framework for building APIs and server-rendered sites.",
+        "summary": "My go-to Python web framework — both JSON APIs and server-rendered sites.",
         "usage": [
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "Serves the REST API for tasks, lists, and auth, issues JWTs, and "
-                "serves the compiled React/Vite frontend from a single container.",
+                "detail": "Flask is the backbone of the backend. It exposes a JSON REST API "
+                "under /api (auth, tasks, lists, and four AI endpoints), issues and verifies "
+                "tokens with Flask-JWT-Extended, and applies CORS. The same app factory also "
+                "serves the compiled React/Vite SPA in production, so one container runs both "
+                "the API and the frontend. Endpoints cover task view filters, sidebar count "
+                "badges, subtask creation via parent_id, reordering, and AI quick-add, "
+                "breakdown, plan, and chat.",
             },
             {
                 "label": "This portfolio",
                 "href": "https://github.com/ot-404/portfolio",
-                "detail": "Server-renders the pages with Jinja; a build script then freezes "
-                "it to static HTML for GitHub Pages.",
+                "detail": "Server-renders every page from Jinja templates that extend a shared "
+                "base layout — home, projects, these per-skill pages, and a contact form that "
+                "emails submissions. A freeze step then turns the rendered output into the "
+                "static site you're reading.",
             },
         ],
     },
@@ -123,14 +138,19 @@ SKILLS = [
             {
                 "label": "BeatLab Pro",
                 "href": "/projects/#p-beatlab",
-                "detail": "The whole app is vanilla JavaScript: real-time audio synthesis via "
-                "the Web Audio API, a 16-step sequencer, a piano roll, and a synth/mixer "
-                "UI — no framework.",
+                "detail": "The entire instrument is hand-written vanilla JavaScript on top of "
+                "the Web Audio API — no framework or audio library. It builds a single "
+                "AudioContext graph of oscillators, gain nodes, biquad filters, a convolver "
+                "for reverb, and a delay line. ADSR envelopes are shaped by scheduling "
+                "setValueAtTime and exponential/linear ramps on gain nodes; a step sequencer "
+                "triggers voices in time, the piano roll plays polyphonically, and your "
+                "patterns are saved to localStorage.",
             },
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "Drives the React front-end and its AI-powered interactions.",
+                "detail": "Drives the React 19 front-end — async fetch calls to the REST API, "
+                "UI state, and the AI assistant interactions.",
             },
         ],
     },
@@ -142,9 +162,12 @@ SKILLS = [
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "React 19 + Vite power the app shell — task views "
-                "(Today/Upcoming/All), nested subtasks, the AI assistant chat drawer, and "
-                "the marketing landing page — styled with Tailwind CSS.",
+                "detail": "React 19 + Vite power the app shell. React Router drives the task "
+                "views (Today, Upcoming, All, Inbox, Completed) and custom lists, and a "
+                "sidebar shows live per-view counts. It's built from focused components — "
+                "TaskRow, TaskModal, QuickAdd, ListModal, and an AIAssistant chat drawer — "
+                "with auth state held in an AuthContext. The whole thing is styled with "
+                "Tailwind CSS and ships as an installable PWA via a service worker.",
             },
         ],
     },
@@ -156,19 +179,23 @@ SKILLS = [
             {
                 "label": "BeatLab Pro",
                 "href": "/projects/#p-beatlab",
-                "detail": "Hand-written HTML5 and CSS3 for the DAW layout, the grid "
-                "sequencer, and all the controls.",
+                "detail": "Hand-written HTML5 and CSS3 for the full DAW interface — the 16-step "
+                "grid sequencer, piano roll, per-track mixer, and synth/effects panels — laid "
+                "out with CSS grid and flexbox in a dark theme, with no UI framework.",
             },
             {
                 "label": "This portfolio",
                 "href": "https://github.com/ot-404/portfolio",
-                "detail": "A custom dark theme built with CSS variables and a responsive "
-                "layout — no UI framework.",
+                "detail": "A custom dark theme written from scratch: CSS custom properties for "
+                "the colour and spacing tokens, responsive grid/flex layouts, a sticky blurred "
+                "header, hover and :target highlight states, and a mobile nav — all without a "
+                "CSS framework.",
             },
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "Styled with Tailwind CSS on top of semantic markup.",
+                "detail": "Semantic markup styled with Tailwind CSS utility classes and shared "
+                "design tokens for the dark SaaS look.",
             },
         ],
     },
@@ -180,9 +207,12 @@ SKILLS = [
             {
                 "label": "Lumo — AI To-Do App",
                 "href": "/projects/#p-lumo",
-                "detail": "Models users, tasks, lists, and nested subtasks via SQLAlchemy "
-                "over a SQL database, with the relationships and queries that power "
-                "every view.",
+                "detail": "The data layer is modeled with SQLAlchemy: a User table, TaskList "
+                "(name, colour, icon), and Task (priority, due date, notes, and a "
+                "self-referential parent_id for nested subtasks), plus a log of AI calls. "
+                "Queries back every screen — date filters for today and upcoming, inbox "
+                "(tasks with no list), per-list views, and aggregate counts for the sidebar "
+                "badges. It runs on SQLite locally and PostgreSQL (Neon) in production.",
             },
         ],
     },
@@ -194,9 +224,11 @@ SKILLS = [
             {
                 "label": "All my projects",
                 "href": "https://github.com/ot-404",
-                "detail": "Every project lives in a Git repo on GitHub. I branch and commit "
-                "day to day and rely on Git-based deploys — this portfolio auto-publishes "
-                "to GitHub Pages on each push.",
+                "detail": "Every project lives in a Git repo under github.com/ot-404, and I "
+                "work in feature branches and commits day to day. I also use Git as the deploy "
+                "mechanism: Lumo pushes to two remotes — GitHub for source and a Hugging Face "
+                "Space for hosting — and this portfolio's deploy script commits the generated "
+                "site and pushes it, so GitHub Pages republishes on every push.",
             },
         ],
     },
@@ -208,9 +240,12 @@ SKILLS = [
             {
                 "label": "MY_Game",
                 "href": "/projects/#p-mygame",
-                "detail": "A turn-based roguelike card battler built in Godot 4 — scenes, "
-                "GDScript gameplay logic, a save system, and exports for both desktop "
-                "and mobile.",
+                "detail": "Built in Godot 4 with GDScript. It's organised around autoload "
+                "singletons for cross-scene state — a GameData store, a SaveManager for "
+                "persistence, and an AudioManager — plus a level system (a LevelRegistry, "
+                "per-level LevelData, and PuzzleState/PuzzleSolver logic) and separate scenes "
+                "for the main menu, level select, and gameplay. It's set up to export to both "
+                "desktop and mobile.",
             },
         ],
     },
