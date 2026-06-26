@@ -90,12 +90,14 @@ PROJECTS = [
         "url": "/beatlab/",
     },
     {
-        "title": "AI Help Desk System",
+        "title": "Lumo — AI To-Do App",
         "blurb": (
-            "A help desk web app with JWT auth, role-based dashboards, and "
-            "AI/RAG-assisted ticket handling."
+            "A dark, SaaS-style to-do app where AI does the busywork — capture "
+            "tasks in plain English, auto-extract due dates and priorities, break "
+            "tasks into subtasks, plan your day, and chat with an assistant that "
+            "knows your list."
         ),
-        "tags": ["Flask", "React", "AI / RAG", "JWT"],
+        "tags": ["Flask", "React", "Tailwind CSS", "Claude AI"],
         "url": "https://github.com/ot-404/ai-help-desk-system",
     },
     {
