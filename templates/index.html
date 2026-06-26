@@ -24,7 +24,7 @@
   <h2 class="section-title">What I work with</h2>
   <ul class="skill-grid">
     {% for skill in skills %}
-      <li class="skill-chip">{{ skill }}</li>
+      <li><a class="skill-chip" href="{{ skill.url }}"{% if skill.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ skill.name }}</a></li>
     {% endfor %}
   </ul>
 </section>

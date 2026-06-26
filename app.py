@@ -72,14 +72,22 @@ PROFILE = {
     ],
 }
 
+# Each skill links to a project that shows it in action (Git -> GitHub profile).
 SKILLS = [
-    "Python", "Flask", "JavaScript", "React",
-    "HTML & CSS", "SQL", "Git", "Godot",
+    {"name": "Python", "url": "/projects/#p-lumo"},
+    {"name": "Flask", "url": "/projects/#p-lumo"},
+    {"name": "JavaScript", "url": "/projects/#p-beatlab"},
+    {"name": "React", "url": "/projects/#p-lumo"},
+    {"name": "HTML & CSS", "url": "/projects/#p-beatlab"},
+    {"name": "SQL", "url": "/projects/#p-lumo"},
+    {"name": "Git", "url": "https://github.com/ot-404"},
+    {"name": "Godot", "url": "/projects/#p-mygame"},
 ]
 
 PROJECTS = [
     {
         "title": "Lumo — AI To-Do App",
+        "slug": "lumo",
         "blurb": (
             "A dark, SaaS-style to-do app where AI does the busywork — capture "
             "tasks in plain English, auto-extract due dates and priorities, break "
@@ -91,6 +99,7 @@ PROJECTS = [
     },
     {
         "title": "BeatLab Pro",
+        "slug": "beatlab",
         "blurb": (
             "A browser-based DAW and beat sequencer — 16-step drum grid, "
             "polyphonic piano roll, per-track mixer, synth editor with ADSR "
@@ -102,6 +111,7 @@ PROJECTS = [
     },
     {
         "title": "MY_Game",
+        "slug": "mygame",
         "blurb": (
             "A turn-based roguelike card battler for desktop and mobile, "
             "built in Godot 4."

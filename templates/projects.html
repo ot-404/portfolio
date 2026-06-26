@@ -10,7 +10,7 @@
 
   <div class="project-grid project-grid--full">
     {% for p in projects %}
-      <article class="project-card">
+      <article class="project-card"{% if p.slug %} id="p-{{ p.slug }}"{% endif %}>
         <h3>{{ p.title }}</h3>
         <p>{{ p.blurb }}</p>
         <ul class="tag-row">

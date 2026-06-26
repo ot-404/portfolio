@@ -228,6 +228,7 @@ a:hover { text-decoration: underline; }
   padding: 0;
 }
 .skill-chip {
+  display: inline-block;
   padding: 9px 16px;
   background: var(--bg-elev);
   border: 1px solid var(--border);
@@ -235,6 +236,17 @@ a:hover { text-decoration: underline; }
   font-size: 0.9rem;
   color: var(--text-dim);
   font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease,
+    background 0.15s ease, transform 0.12s ease;
+}
+.skill-chip:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+  text-decoration: none;
 }
 
 /* --- Projects ------------------------------------------------------------- */
@@ -247,11 +259,17 @@ a:hover { text-decoration: underline; }
 
 .project-card {
   position: relative; /* anchor for the stretched-link overlay below */
+  scroll-margin-top: 88px; /* clear the sticky header when jumped to via #anchor */
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 26px;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+/* Highlight the card a skill link points at. */
+.project-card:target {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 /* Cards with a link become fully clickable, not just the "Visit" text. */
 .project-card:has(.link-arrow) { cursor: pointer; }
