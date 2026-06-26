@@ -79,17 +79,6 @@ SKILLS = [
 
 PROJECTS = [
     {
-        "title": "BeatLab Pro",
-        "blurb": (
-            "A browser-based DAW and beat sequencer — 16-step drum grid, "
-            "polyphonic piano roll, per-track mixer, synth editor with ADSR "
-            "and filter, reverb and delay, and live keyboard input. "
-            "Entirely synthesised in-browser via the Web Audio API."
-        ),
-        "tags": ["JavaScript", "Web Audio API", "HTML5", "CSS3"],
-        "url": "/beatlab/",
-    },
-    {
         "title": "Lumo — AI To-Do App",
         "blurb": (
             "A dark, SaaS-style to-do app where AI does the busywork — capture "
@@ -99,6 +88,17 @@ PROJECTS = [
         ),
         "tags": ["Flask", "React", "Tailwind CSS", "Claude AI"],
         "url": "https://github.com/ot-404/ai-help-desk-system",
+    },
+    {
+        "title": "BeatLab Pro",
+        "blurb": (
+            "A browser-based DAW and beat sequencer — 16-step drum grid, "
+            "polyphonic piano roll, per-track mixer, synth editor with ADSR "
+            "and filter, reverb and delay, and live keyboard input. "
+            "Entirely synthesised in-browser via the Web Audio API."
+        ),
+        "tags": ["JavaScript", "Web Audio API", "HTML5", "CSS3"],
+        "url": "/beatlab/",
     },
     {
         "title": "MY_Game",
