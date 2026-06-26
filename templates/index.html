@@ -42,7 +42,7 @@
         <ul class="tag-row">
           {% for t in p.tags %}<li>{{ t }}</li>{% endfor %}
         </ul>
-        {% if p.url %}<a class="link-arrow" href="{{ p.url }}" target="_blank" rel="noopener">Visit &rarr;</a>{% endif %}
+        {% if p.url %}<a class="link-arrow" href="{{ p.url }}" target="_blank" rel="noopener" aria-label="Visit {{ p.title }}">Visit &rarr;</a>{% endif %}
       </article>
     {% endfor %}
   </div>

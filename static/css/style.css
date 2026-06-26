@@ -246,17 +246,28 @@ a:hover { text-decoration: underline; }
 }
 
 .project-card {
+  position: relative; /* anchor for the stretched-link overlay below */
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 26px;
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
+/* Cards with a link become fully clickable, not just the "Visit" text. */
+.project-card:has(.link-arrow) { cursor: pointer; }
+.project-card .link-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
 .project-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+.project-card:hover h3 { color: var(--accent); }
 .project-card h3 {
   font-family: var(--font-display);
   margin: 0 0 10px;
   font-size: 1.25rem;
+  transition: color 0.15s ease;
 }
 .project-card p { color: var(--text-dim); margin: 0 0 16px; }
 
